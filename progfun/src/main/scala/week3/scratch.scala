@@ -1,8 +1,9 @@
 package week3
-
+// 
+import week2._
 /**
   * Created by trodriguez on 01/07/2016.
   */
-class scratch {
-
+object scratch {
+  new Rational(3, 4)
 }
