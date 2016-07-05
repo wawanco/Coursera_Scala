@@ -66,11 +66,14 @@ abstract class TweetSet {
    * and be implemented in the subclasses?
    */
   def mostRetweeted: Tweet
+  def lessRetweeted: Tweet
 
   /**
     * helper function for `mostRetweeted`
     */
   def mostRetweetedAcc(acc: Tweet): Tweet
+  def lessRetweetedAcc(acc: Tweet): Tweet
+
   
   /**
    * Returns a list containing all tweets of this set, sorted by retweet count
@@ -81,7 +84,21 @@ abstract class TweetSet {
    * Question: Should we implment this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def descendingByRetweet: TweetList = buildList(Nil, this)
+  def isEmpty: Boolean
+
+  def descendingByRetweet: TweetList = {
+    def buildList(lst: TweetList, set: TweetSet): TweetList = {
+      if (set.isEmpty)
+        lst
+      else
+      {
+        val best = set.lessRetweeted
+        buildList(new Cons(best, lst), set remove best)
+      }
+    }
+    println("Hello world..")
+    buildList(Nil, this)
+  }
   
   /**
    * The following methods are already implemented
@@ -118,8 +135,13 @@ class Empty extends TweetSet {
   def union(that: TweetSet): TweetSet = that
 
   def mostRetweetedAcc(acc: Tweet): Tweet = acc
+  def lessRetweetedAcc(acc: Tweet): Tweet = acc
+
 
   def mostRetweeted: Tweet = throw new NoSuchElementException
+  def lessRetweeted: Tweet = throw new NoSuchElementException
+
+  def isEmpty: Boolean = true
 
   /**
    * The following methods are already implemented
@@ -150,9 +172,8 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
   def union(that: TweetSet): TweetSet =
     ((left union right) union that) incl elem
 
-  def mostRetweeted: Tweet = {
-    mostRetweetedAcc(elem)
-  }
+  def mostRetweeted: Tweet = mostRetweetedAcc(elem)
+  def lessRetweeted: Tweet = lessRetweetedAcc(elem)
 
   def mostRetweetedAcc(acc: Tweet): Tweet = {
     if(elem.retweets > acc.retweets)
@@ -160,14 +181,14 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     else
       left.mostRetweetedAcc(right.mostRetweetedAcc(acc))
   }
-
-  def descendingByRetweet: TweetList = {
-    def buildList(lst: TweetList, set: TweetSet): TweetList = {
-      val best = set.mostRetweeted
-      buildList(new Cons(best, lst), set remove best)
-    }
-    buildList(Nil, this)
+  def lessRetweetedAcc(acc: Tweet): Tweet = {
+    if(elem.retweets < acc.retweets)
+      left.lessRetweetedAcc(right.lessRetweetedAcc(elem))
+    else
+      left.lessRetweetedAcc(right.lessRetweetedAcc(acc))
   }
+
+  def isEmpty: Boolean = false
 
   /**
    * The following methods are already implemented
@@ -211,10 +232,15 @@ object Nil extends TweetList {
   def head = throw new java.util.NoSuchElementException("head of EmptyList")
   def tail = throw new java.util.NoSuchElementException("tail of EmptyList")
   def isEmpty = true
+  override def toString = ""
 }
 
 class Cons(val head: Tweet, val tail: TweetList) extends TweetList {
   def isEmpty = false
+  override def toString = {
+    def print(lst: TweetList): String = head + "\n"; print(tail)
+    print(this)
+  }
 }
 
 
