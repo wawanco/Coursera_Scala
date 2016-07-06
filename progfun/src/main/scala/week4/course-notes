@@ -1,0 +1,26 @@
+## Bounds
+assertAllPos[S <: IntSet](x: S): S
+S <: T S is a subtype of T
+S >: T T is a subtype of S
+
+## Variance
+If A <: B => List[A] <: List[B]
+'List' is called covariant types
+
+In Java method "sort(Object[] a)" uses covariances to
+define a single method for all the subtypes.
+
+Liskov principle:
+If A <: B then everything one ca do with a value of type B
+one should be able to do with a value of type A
+
+In Scala Arrays is NOT covariant
+
+## Accessor and types
+Hacky solution :
+- isInstanceOf[T]: Boolean // Check wether this object if conform to T
+- asInstanceOf[T]: Boolean // Treat this as an instance of T (throw excp if not)
+
+==> Use discouraged in Scala
+
+
