@@ -23,4 +23,9 @@ assignements/objsets/project/project/
 assignements/objsets/project/target/
 assignements/objsets/target/
 
+assignements/patmat/.idea/
+assignements/patmat/project/project/
+assignements/patmat/project/target/
+assignements/patmat/target/
+
 .DS_Store

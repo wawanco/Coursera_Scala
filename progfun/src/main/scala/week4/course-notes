@@ -1,9 +1,13 @@
+## ########################
 ## Bounds
+## ########################
 assertAllPos[S <: IntSet](x: S): S
 S <: T S is a subtype of T
 S >: T T is a subtype of S
 
+## ########################
 ## Variance
+## ########################
 If A <: B => List[A] <: List[B]
 'List' is called covariant types
 
@@ -16,11 +20,88 @@ one should be able to do with a value of type A
 
 In Scala Arrays is NOT covariant
 
+## ########################
 ## Accessor and types
+## ########################
 Hacky solution :
 - isInstanceOf[T]: Boolean // Check wether this object if conform to T
 - asInstanceOf[T]: Boolean // Treat this as an instance of T (throw excp if not)
 
 ==> Use discouraged in Scala
+
+## ########################
+## Pattern Matching
+## ########################
+Def : way to reverse the construction process and to wonder:
+- Which subclass was used
+- What were the arguments of the constructor
+
+case class is a immutable data-holding objects that should exclusively depend on their constructor arguments, so:
+    => You can use a compact initialisation syntax (Number(1) instead of new Number(1))
+    => You can do pattern matching on it
+    => You have equality comparisons implicitly defined
+
+(If an object performs stateful computations on the inside or exhibits other kinds of complex behaviour, it should be an ordinary class)
+
+Pattern can be:
+- constructors (Number(e))
+- variables (n, e1, ...) => lower case
+- wildcard (_)
+- constant true, N => upper case
+
+A pattern can only appear once => Sum(x, x) is illegal
+
+### Two different design pattern
+
+Design 1                                   | Design 2
+----------------------------------------------------------------------------------------
+trait Expr {                               |        trait Expr
+  def eval: Int = this match {             |          def eval
+    case Number(n) => n                    |
+    case Sum(e1, e2) => e1.eval + e2.eval  |        class Number
+  }                                        |          def eval
+}                                          |
+                                           |        class Sum
+case class Number(n: Int)                  |          def eval
+                                           |
+case class Sum(e1: Expr, e2: Expr)         |
+----------------------------------------------------------------------------------------
+
+If we plan to create a lot of new method prefer "Design 1" if we plan to add lot of new subclasses prefer "Design 2"
+
+## ########################
+## Lists
+## ########################
+
+Differences between lists and classes:
+- List are immutable (element cannot be changed)
+- Lists are recursive, array is flat
+
+Lists and arrays are homogeneous : element must all have the same type List[T]
+
+"::"  list constructor, pronounced cons
+x :: xs => new list with x as head xs as tail
+
+"::" is method calls of right-hand operand (all other operator method are left hand operand call)
+
+It is possible to decompose lists with pattern matching.
+Nil                 Matches the Nil constant
+p :: ps             Matches a list with a head matching p and a tail matchin ps
+List(p1, ..., pn)   Same as p1 :: ... :: pn :: Nil
+
+Example:
+1 :: 2 :: xs    List like (1, 2, ...)
+x :: Nil        List of length 1
+List(x)         == x :: Nil
+List()          == Nil
+List(2 :: xs)   List that contains only one element: a list that starts with 2
+
+x :: y :: List(xs, ys) :: zs
+
+
+
+
+
+
 
 
