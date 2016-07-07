@@ -76,7 +76,24 @@ object Huffman {
     * println("integer is  : "+ theInt)
     * }
     */
-  def times(chars: List[Char]): List[(Char, Int)] = ???
+  def makeUniqueChars(chars: List[Char], uniqueChars: List[Char]): List[Char] = chars match {
+    case Nil =>  uniqueChars
+    case x :: xs =>
+      if(uniqueChars.contains(x)) makeUniqueChars(xs, uniqueChars)
+      else makeUniqueChars(xs, x :: uniqueChars)
+  }
+
+  def timesAcc(uniques: List[Char], chars: List[Char], time: List[(Char, Int)]): List[(Char, Int)] = {
+    uniques match {
+      case Nil => time
+      case x :: xs => timesAcc(uniques.tail, chars, (uniques.head, chars.count(_ == uniques.head)) :: time)
+    }
+  }
+
+  def times(chars: List[Char]): List[(Char, Int)] = {
+    val uniques = makeUniqueChars(chars, Nil)
+    timesAcc(uniques, chars, Nil)
+  }
 
   /**
     * Returns a list of `Leaf` nodes for a given frequency table `freqs`.
@@ -85,12 +102,27 @@ object Huffman {
     * head of the list should have the smallest weight), where the weight
     * of a leaf is the frequency of the character.
     */
-  def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = ???
+  def heavierElement(freqs: List[(Char, Int)], maxElem: (Char, Int)): (Char, Int) = freqs match {
+    case Nil => maxElem
+    case x :: xs => if(x._2 > maxElem._2) heavierElement(xs, x) else heavierElement(xs, maxElem)
+  }
+
+  def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = {
+    def iterate(freqs: List[(Char, Int)], leaves: List[Leaf]): List[Leaf] = {
+      val elem = heavierElement(freqs, (0, 0))
+      if(freqs.isEmpty) leaves
+      else iterate(freqs diff List(elem), Leaf(elem._1, elem._2) :: leaves)
+    }
+    iterate(freqs, Nil)
+  }
 
   /**
     * Checks whether the list `trees` contains only one single code tree.
     */
-  def singleton(trees: List[CodeTree]): Boolean = ???
+  def singleton(trees: List[CodeTree]): Boolean = trees match {
+    case x :: Nil => true
+    case _ => false
+  }
 
   /**
     * The parameter `trees` of this function is a list of code trees ordered

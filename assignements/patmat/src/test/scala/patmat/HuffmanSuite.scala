@@ -23,30 +23,42 @@ class HuffmanSuite extends FunSuite {
     }
   }
 
-
   test("chars of a larger tree") {
     new TestTrees {
       assert(chars(t2) === List('a','b','d'))
-      assert(weight(Leaf('a', 2)) === List('a'))
+      assert(chars(Leaf('a', 2)) === List('a'))
     }
   }
 
+  test("make unique list ") {
+    assert(makeUniqueChars(List('a', 'b', 'a'), Nil) === List('b', 'a'))
+  }
+
+  test("number of times a character occurs") {
+    assert(times(List('a', 'b', 'a')) === List(('a', 2), ('b', 1)))
+  }
 
   test("string2chars(\"hello, world\")") {
     assert(string2Chars("hello, world") === List('h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'))
   }
 
+  test("lighter element") {
+    assert(heavierElement(List(('a', 2), ('b', 1)), (0, 0)) === ('a', 2))
+  }
 
   test("makeOrderedLeafList for some frequency table") {
     assert(makeOrderedLeafList(List(('t', 2), ('e', 1), ('x', 3))) === List(Leaf('e',1), Leaf('t',2), Leaf('x',3)))
   }
 
+  test("singleton") {
+    assert(!singleton(List(Leaf('e',1), Leaf('t',2), Leaf('x',3))))
+    assert(singleton(List(Leaf('e',1))))
+  }
 
   test("combine of some leaf list") {
     val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
     assert(combine(leaflist) === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3), Leaf('x',4)))
   }
-
 
   test("decode and encode a very short text should be identity") {
     new TestTrees {
