@@ -144,12 +144,16 @@ object Huffman {
   }
 
   def combine(trees: List[CodeTree]): List[CodeTree] = trees match {
+    case Nil => throw new Error("combine(Nil)")
     case x :: Nil => trees
     case x1 :: x2 :: xs => {
       val fork = makeCodeTree(x1, x2)
       val part1 = filter(xs, elem => weight(elem) < weight(fork))
       val part2 = filter(xs, elem => weight(elem) >= weight(fork))
-      filter(xs, elem => weight(elem) > weight()) :: xs
+      if(part1.isEmpty)
+        fork :: part2
+      else
+        part1 ::: fork :: part2
     }
   }
 
