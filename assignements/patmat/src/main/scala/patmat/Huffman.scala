@@ -136,7 +136,22 @@ object Huffman {
     * If `trees` is a list of less than two elements, that list should be returned
     * unchanged.
     */
-  def combine(trees: List[CodeTree]): List[CodeTree] = ???
+  def filter(trees: List[CodeTree], p: CodeTree => Boolean): List[CodeTree] = {
+    trees match {
+      case Nil => Nil
+      case x :: xs => if(p(x)) x :: filter(xs, p) else filter(xs, p)
+    }
+  }
+
+  def combine(trees: List[CodeTree]): List[CodeTree] = trees match {
+    case x :: Nil => trees
+    case x1 :: x2 :: xs => {
+      val fork = makeCodeTree(x1, x2)
+      val part1 = filter(xs, elem => weight(elem) < weight(fork))
+      val part2 = filter(xs, elem => weight(elem) >= weight(fork))
+      filter(xs, elem => weight(elem) > weight()) :: xs
+    }
+  }
 
   /**
     * This function will be called in the following way:
