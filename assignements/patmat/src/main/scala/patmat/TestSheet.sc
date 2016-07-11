@@ -1,3 +1,4 @@
+import patmat.Huffman.Leaf
 import patmat._
 
-Huffman.lighterElement(List(('t', 2), ('e', 1), ('x', 3)), (0, Int.MaxValue))
+Huffman.until(Huffman.singleton, Huffman.combine)(List(Leaf('e', 3), Leaf('t', 3), Leaf('x', 4), Leaf('y', 10)))
