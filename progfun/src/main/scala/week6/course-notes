@@ -1,0 +1,25 @@
+for(s) yield e
+s : is a sequence of generator and filter
+e : is an expression whose value is returned by an iteration
+
+generator: "p <- e" with p a pattern and e an expression whose value is a collection
+filter: "if f" f is a boolean expression
+
+Set is very close to Sequences but:
+1. Sets are unordered
+2. Sets do not have duplicate elements
+3. Fundamental operation is "contains" (instead of head and tail for List)
+
+Map[Key, Value]
+
+Trait Option have two subclasses:
+None (singleton)
+Some(x) if map associate given key to x
+
+ORDER BY =>
+    sortWith : pass criteria in argument
+    sorted : natural ordering
+
+GROUP BY => Partition a collection into a Map with key -> List(value)
+
+++ on Map  impose value of left operand over right operand
