@@ -24,9 +24,9 @@ def combinations(occurrences: Occurrences): List[Occurrences] = {
   }.toList
 }
 
-val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
-val r = List(('r', 1))
+val lard = List(('a', 2), ('d', 1), ('l', 1), ('r', 1))
+val r = List(('a', 2), ('r', 1))
 val lad = List(('a', 1), ('d', 1), ('l', 1))
 
-
-lard.toMap
+// r.toMap foldLeft (lard.toMap) ((res, elem) => res + elem )
+r.toMap.foldLeft(lard.toMap)((res:Map[Char, Int], elem) => res - elem._1)
