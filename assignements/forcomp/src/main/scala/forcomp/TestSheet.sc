@@ -24,9 +24,20 @@ def combinations(occurrences: Occurrences): List[Occurrences] = {
   }.toList
 }
 
+//combinations(a)
+
 val lard = List(('a', 2), ('d', 1), ('l', 1), ('r', 1))
-val r = List(('a', 2), ('r', 1))
+val r = List(('a', 1), ('r', 1))
 val lad = List(('a', 1), ('d', 1), ('l', 1))
 
 // r.toMap foldLeft (lard.toMap) ((res, elem) => res + elem )
-r.toMap.foldLeft(lard.toMap)((res:Map[Char, Int], elem) => res - elem._1)
+r.toMap.foldLeft(lard.toMap)((res:Map[Char, Int], elem) => {
+  val (subChar, subFreq) = elem
+  val newFreq = res(subChar) - subFreq
+  if(newFreq == 0) res - subChar
+  else res + (subChar -> newFreq)
+})
+
+combinations(sentenceOccurrences(List("null"))).tail.tail.tail.tail.tail.tail.tail.tail.tail.tail.tail.head
+(dictionaryByOccurrences withDefaultValue Nil)(List(('l',2), ('n',1), ('u',1))).head
+combinations(subtract(sentenceOccurrences(List("null")), List(('l',2), ('n',1), ('u',1))))
