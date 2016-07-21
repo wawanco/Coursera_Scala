@@ -113,7 +113,7 @@ object Anagrams {
       val newFreq = res(subChar) - subFreq
       if (newFreq == 0) res - subChar
       else res + (subChar -> newFreq)
-    }).toList
+    }).toList.sorted
   }
 
   /** Returns a list of all anagram sentences of the given sentence.
