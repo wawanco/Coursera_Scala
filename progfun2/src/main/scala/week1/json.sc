@@ -36,3 +36,41 @@ def show(json: JSON): String = json match {
 }
 
 show(data)
+
+val data2 = List(
+  JObj(Map (
+    "firstName" -> JStr("John"),
+    "lastName" -> JStr("Smith"),
+    "address" -> JObj(Map(
+      "streetAddress" -> JStr("21 2nd Street"),
+      "state" -> JStr("NY"),
+      "postalCode" -> JNum(10021)
+    )),
+    "phoneNumbers" -> JSeq(List(
+      JObj(Map("type" -> JStr("home"), "number" -> JStr("212 555-1234"))),
+      JObj(Map("type" -> JStr("fax"), "number" -> JStr("646 555-1234")))
+    ))
+  )),
+  JObj(Map (
+    "firstName" -> JStr("Jim"),
+    "lastName" -> JStr("Doe"),
+    "address" -> JObj(Map(
+      "streetAddress" -> JStr("53 Road"),
+      "state" -> JStr("LA"),
+      "postalCode" -> JNum(65999)
+    )),
+    "phoneNumbers" -> JSeq(List(
+      JObj(Map("type" -> JStr("home"), "number" -> JStr("555 919 911")))
+    ))
+  ))
+);
+
+// The left hand side of a generator can be a pattern
+for {
+  JObj(bindings) <- data2
+  JSeq(phones) = bindings("phoneNumbers")
+  JObj(phone) <- phones
+  number = phone("number")
+  JStr(digits) = number
+  if digits startsWith "212"
+} yield (bindings("firstName"), bindings("lastName"))
