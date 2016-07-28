@@ -77,7 +77,6 @@ def leaves: Generator[Leaf] = for {
   x <- integers
 } yield Leaf(x)
 
-
 def inners: Generator[Inner] = for {
   r <- trees
   l <- trees
