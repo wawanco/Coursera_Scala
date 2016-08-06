@@ -43,4 +43,9 @@ assignements/streams/project/project/
 assignements/streams/project/target/
 assignements/streams/target/
 
+assignements/quickcheck/.idea/
+assignements/quickcheck/project/project/
+assignements/quickcheck/project/target/
+assignements/quickcheck/target/
+
 .DS_Store

@@ -1,0 +1,9 @@
+mutable states are constructed from variables.
+
+Variable definition is like value definition but with "var" in place of "val"
+
+var x: String = "abc"
+x = "hi"
+
+var count = 111
+count = count + 1
