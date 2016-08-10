@@ -48,4 +48,9 @@ assignements/quickcheck/project/project/
 assignements/quickcheck/project/target/
 assignements/quickcheck/target/
 
+assignements/calculator/.idea/
+assignements/calculator/project/project/
+assignements/calculator/project/target/
+assignements/calculator/target/
+
 .DS_Store
