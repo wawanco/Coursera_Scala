@@ -882,8 +882,14 @@ $c_Lcalculator_Calculator$.prototype.eval__Lcalculator_Expr__sci_Map__D = (funct
     } else if ($is_Lcalculator_Ref(x1)) {
       var x3 = $as_Lcalculator_Ref(x1);
       var name = x3.name$2;
-      expr = this.getReferenceExpr__p1__T__sci_Map__Lcalculator_Expr(name, references);
-      continue _eval
+      var expr$2 = this.getReferenceExpr__p1__T__sci_Map__Lcalculator_Expr(name, references);
+      var x$3 = new $c_Lcalculator_Ref().init___T(name);
+      if (((expr$2 !== null) && expr$2.equals__O__Z(x$3))) {
+        return (NaN)
+      } else {
+        expr = this.getReferenceExpr__p1__T__sci_Map__Lcalculator_Expr(name, references);
+        continue _eval
+      }
     } else if ($is_Lcalculator_Plus(x1)) {
       var x4 = $as_Lcalculator_Plus(x1);
       var a = x4.a$2;

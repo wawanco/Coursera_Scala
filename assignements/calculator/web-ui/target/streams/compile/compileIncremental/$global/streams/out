@@ -16,14 +16,14 @@
 [0m[[0minfo[0m] [0mCompiling 1 Scala source to C:\Users\Pilar\Documents\Thibault\repo\Coursera_Scala\assignements\calculator\web-ui\target\scala-2.11\classes...[0m
 [0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 2.11.6[0m
 [0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 2.11.6[0m
-[0m[[0mdebug[0m] [0mRunning cached compiler 37fb38bd, interfacing (CompilerInterface) with Scala compiler version 2.11.6[0m
+[0m[[0mdebug[0m] [0mRunning cached compiler 4f6897ee, interfacing (CompilerInterface) with Scala compiler version 2.11.6[0m
 [0m[[0mdebug[0m] [0mCalling Scala compiler with arguments  (CompilerInterface):[0m
 [0m[[0mdebug[0m] [0m	-Xplugin:C:\Users\Pilar\.ivy2\cache\org.scala-js\scalajs-compiler_2.11.6\jars\scalajs-compiler_2.11.6-0.6.2.jar[0m
 [0m[[0mdebug[0m] [0m	-bootclasspath[0m
 [0m[[0mdebug[0m] [0m	C:\Program Files\Java\jre1.8.0_101\lib\resources.jar;C:\Program Files\Java\jre1.8.0_101\lib\rt.jar;C:\Program Files\Java\jre1.8.0_101\lib\sunrsasign.jar;C:\Program Files\Java\jre1.8.0_101\lib\jsse.jar;C:\Program Files\Java\jre1.8.0_101\lib\jce.jar;C:\Program Files\Java\jre1.8.0_101\lib\charsets.jar;C:\Program Files\Java\jre1.8.0_101\lib\jfr.jar;C:\Program Files\Java\jre1.8.0_101\classes;C:\Users\Pilar\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.11.6.jar[0m
 [0m[[0mdebug[0m] [0m	-classpath[0m
 [0m[[0mdebug[0m] [0m	C:\Users\Pilar\Documents\Thibault\repo\Coursera_Scala\assignements\calculator\web-ui\target\scala-2.11\classes;C:\Users\Pilar\.ivy2\cache\org.scala-js\scalajs-library_2.11\jars\scalajs-library_2.11-0.6.2.jar;C:\Users\Pilar\.ivy2\cache\org.scala-js\scalajs-dom_sjs0.6_2.11\jars\scalajs-dom_sjs0.6_2.11-0.8.0.jar[0m
-[0m[[0mdebug[0m] [0mScala compilation took 59.373272457 s[0m
+[0m[[0mdebug[0m] [0mScala compilation took 20.014879126 s[0m
 [0m[[0mdebug[0m] [0mNew invalidations:[0m
 [0m[[0mdebug[0m] [0m	Set()[0m
 [0m[[0mdebug[0m] [0mInitial set of included nodes: Set()[0m
