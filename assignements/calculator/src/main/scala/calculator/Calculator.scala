@@ -18,8 +18,7 @@ object Calculator {
     case Literal(v) => v
     case Ref(name) => {
       val expr = getReferenceExpr(name, references)
-      if(expr == Ref(name)) Double.NaN
-      else eval(getReferenceExpr(name, references), references)
+      eval(expr, references updated (name,  Signal(Literal(Double.NaN))))
     }
     case Plus(a, b) => eval(a, references) + eval(b, references)
     case Minus(a, b) => eval(a, references) - eval(b, references)
