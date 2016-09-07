@@ -16,28 +16,28 @@ object ParallelCountChangeRunner {
     Key.verbose -> true
   ) withWarmer(new Warmer.Default)
 
-  def main(args: Array[String]): Unit = {
-    val amount = 250
-    val coins = List(1, 2, 5, 10, 20, 50)
-    val seqtime = standardConfig measure {
-      seqResult = ParallelCountChange.countChange(amount, coins)
-    }
-    println(s"sequential result = $seqResult")
-    println(s"sequential count time: $seqtime ms")
-
-    def measureParallelCountChange(threshold: ParallelCountChange.Threshold): Unit = {
-      val fjtime = standardConfig measure {
-        parResult = ParallelCountChange.parCountChange(amount, coins, threshold)
+    def main(args: Array[String]): Unit = {
+      val amount = 250
+      val coins = List(1, 2, 5, 10, 20, 50)
+      val seqtime = standardConfig measure {
+        seqResult = ParallelCountChange.countChange(amount, coins)
       }
-      println(s"parallel result = $parResult")
-      println(s"parallel count time: $fjtime ms")
-      println(s"speedup: ${seqtime / fjtime}")
-    }
+      println(s"sequential result = $seqResult")
+      println(s"sequential count time: $seqtime ms")
 
-    measureParallelCountChange(ParallelCountChange.moneyThreshold(amount))
-    measureParallelCountChange(ParallelCountChange.totalCoinsThreshold(coins.length))
-    measureParallelCountChange(ParallelCountChange.combinedThreshold(amount, coins))
-  }
+      def measureParallelCountChange(threshold: ParallelCountChange.Threshold): Unit = {
+        val fjtime = standardConfig measure {
+          parResult = ParallelCountChange.parCountChange(amount, coins, threshold)
+        }
+        println(s"parallel result = $parResult")
+        println(s"parallel count time: $fjtime ms")
+        println(s"speedup: ${seqtime / fjtime}")
+      }
+
+      measureParallelCountChange(ParallelCountChange.moneyThreshold(amount))
+      measureParallelCountChange(ParallelCountChange.totalCoinsThreshold(coins.length))
+      measureParallelCountChange(ParallelCountChange.combinedThreshold(amount, coins))
+    }
 }
 
 object ParallelCountChange {
@@ -59,10 +59,12 @@ object ParallelCountChange {
    *  specified list of coins for the specified amount of money.
    */
   def parCountChange(money: Int, coins: List[Int], threshold: Threshold): Int = {
-    if(threshold(money, coins) || coins.isEmpty) {
+    if (money < 0 || coins.isEmpty)
+      return 0
+    if(threshold(money, coins) || coins.isEmpty || money == 0) {
       countChange(money, coins)
     } else {
-      val (c1, c2) = parallel (
+      val (c1, c2) = /*parallel*/ (
         parCountChange(money, coins.tail, threshold),
         parCountChange(money - coins.head, coins, threshold))
       c1 + c2
@@ -73,7 +75,7 @@ object ParallelCountChange {
   def moneyThreshold(startingMoney: Int): Threshold = (money, coins) => 3 * money <= 2 * startingMoney
 
   /** Threshold heuristic based on the total number of initial coins. */
-  def totalCoinsThreshold(totalCoins: Int): Threshold = (money, coins) => coins.length <= (2 * totalCoins) / 3
+  def totalCoinsThreshold(totalCoins: Int): Threshold = (money, coins) => coins.length < (2 * totalCoins) / 3
 
   /** Threshold heuristic based on the starting money and the initial list of coins. */
   def combinedThreshold(startingMoney: Int, allCoins: List[Int]): Threshold = {
