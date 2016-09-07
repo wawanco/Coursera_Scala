@@ -68,4 +68,9 @@ assignements/reductions/project/project/
 assignements/reductions/project/target/
 assignements/reductions/target/
 
+assignements/kmeans/.idea/
+assignements/kmeans/project/project/
+assignements/kmeans/project/target/
+assignements/kmeans/target/
+
 .DS_Store
