@@ -74,6 +74,46 @@ import FloatOps._
     }
   }
 
+  test("Fork with 4 empty quadrants") {
+    val nw = Empty(17.5f, 27.5f, 5f)
+    val ne = Empty(22.5f, 27.5f, 5f)
+    val sw = Empty(17.5f, 32.5f, 5f)
+    val se = Empty(22.5f, 32.5f, 5f)
+    val quad = Fork(nw, ne, sw, se)
+    assert(quad.centerX == 20, s"${quad.centerX} should be 20")
+    assert(quad.centerY == 30, s"${quad.centerY} should be 30")
+    assert(quad.mass == 0, s"${quad.mass} should be 0")
+    assert(quad.massX == 20, s"${quad.massX} should be 20")
+    assert(quad.massY == 30, s"${quad.massY} should be 30")
+  }
+
+  test("Leaf.insert(b) should return a new Fork if size > minimumSize") {
+    val b = new Body(123f, 18f, 26f, 0f, 0f)
+    val leaf = Leaf(20, 30, 10, Seq(b))
+    val f = leaf.insert(new Body(50f, 21f, 29f, 0f, 0f))
+    f match {
+      case Fork(nw, ne, sw, se) => {
+        nw match {
+          case Leaf(_, _, _, _) => assert(true)
+          case _ => fail("nw should be a Leaf")
+        }
+        ne match {
+          case Leaf(_, _, _, _) => assert(true)
+          case _ => fail("ne should be a Leaf")
+        }
+        sw match {
+          case Empty(_, _, _) => assert(true)
+          case _ => fail("sw should be Empty")
+        }
+        se match {
+          case Empty(_, _, _) => assert(true)
+          case _ => fail("se should be Empty")
+        }
+      }
+      case _ => fail("Leaf.insert(b) should return a new Fork if size > minimumSize")
+    }
+  }
+
   // test cases for Body
 
   test("Body.updated should do nothing for Empty quad trees") {
