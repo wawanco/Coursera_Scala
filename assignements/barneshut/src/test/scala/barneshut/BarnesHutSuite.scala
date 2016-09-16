@@ -137,6 +137,23 @@ import FloatOps._
     assert(body.yspeed ~= 0.015557117f)
   }
 
+  test("Update body wrt to a Fork") {
+    val b1 = new Body(123f, 18f, 26f, 0f, 0f)
+    val b2 = new Body(524.5f, 24.5f, 25.5f, 0f, 0f)
+    val b3 = new Body(245f, 22.4f, 41f, 0f, 0f)
+
+    val nw = Leaf(17.5f, 27.5f, 5f, Seq(b1, b2))
+    val ne = Empty(22.5f, 27.5f, 5f)
+    val sw = Empty(17.5f, 32.5f, 5f)
+    val se = Empty(22.5f, 32.5f, 5f)
+    val quad = Fork(nw, ne, sw, se)
+
+    val body = b3.updated(quad)
+
+    assert(body.xspeed ~= 0.14613827f)
+    assert(body.yspeed ~= -2.607387f)
+  }
+
   // test cases for sector matrix
 
   test("'SectorMatrix.+=' should add a body at (25,47) to the correct bucket of a sector matrix of size 96") {
@@ -150,6 +167,51 @@ import FloatOps._
     sm += body
     val res = sm(2, 3).size == 1 && sm(2, 3).find(_ == body).isDefined
     assert(res, s"Body not found in the right sector")
+  }
+
+  test("'SectorMatrix.+=' should add a body at (25,47) to the correct bucket of a sector matrix of size 100") {
+    val body = new Body(5, 25, 47, 0.1f, 0.1f)
+    val boundaries = new Boundaries()
+    boundaries.minX = 1
+    boundaries.minY = 1
+    boundaries.maxX = 101
+    boundaries.maxY = 101
+    val sm = new SectorMatrix(boundaries, SECTOR_PRECISION)
+    sm += body
+    val res = sm(2, 3).size == 1 && sm(2, 3).find(_ == body).isDefined
+    assert(res, s"Body not found in the right sector")
+  }
+
+  test("'SectorMatrix.+=' should add a body at (110, 110) ie out of bound") {
+    val body = new Body(5, 110, 110, 0.1f, 0.1f)
+    val boundaries = new Boundaries()
+    boundaries.minX = 1
+    boundaries.minY = 1
+    boundaries.maxX = 101
+    boundaries.maxY = 101
+    val sm = new SectorMatrix(boundaries, SECTOR_PRECISION)
+    sm += body
+    val maxBound = SECTOR_PRECISION - 1
+    val res = sm(maxBound, maxBound).size == 1 && sm(maxBound, maxBound).find(_ == body).isDefined
+    assert(res, s"Body not found in the right sector")
+  }
+
+  test("'SectorMatrix.combine' should correctly combine two sector matrices of size 96 that contain some points in the same sector") {
+    val b1 = new Body(5, 25, 47, 0.1f, 0.1f)
+    val b2 = new Body(5, 25, 47, 0.1f, 0.1f)
+    val boundaries = new Boundaries()
+    boundaries.minX = 1
+    boundaries.minY = 1
+    boundaries.maxX = 97
+    boundaries.maxY = 97
+    val sm1 = new SectorMatrix(boundaries, SECTOR_PRECISION)
+    val sm2 = new SectorMatrix(boundaries, SECTOR_PRECISION)
+    sm1 += b1
+    sm2 += b2
+    assert(sm1(2, 3).size == 1, s"sm1 should have only 1 body")
+    assert(sm2(2, 3).size == 1, s"sm2 should have only 1 body")
+    val sm = sm1.combine(sm2)
+    assert(sm(2, 3).size == 2, "combination has 2 bodies")
   }
 
 }

@@ -5,21 +5,13 @@ package object barneshut {
 
   class Boundaries {
     var minX = Float.MaxValue
-
     var minY = Float.MaxValue
-
     var maxX = Float.MinValue
-
     var maxY = Float.MinValue
-
     def width = maxX - minX
-
     def height = maxY - minY
-
     def size = math.max(width, height)
-
     def centerX = minX + width / 2
-
     def centerY = minY + height / 2
 
     override def toString = s"Boundaries($minX, $minY, $maxX, $maxY)"
@@ -27,19 +19,12 @@ package object barneshut {
 
   sealed abstract class Quad {
     def massX: Float
-
     def massY: Float
-
     def mass: Float
-
     def centerX: Float
-
     def centerY: Float
-
     def size: Float
-
     def total: Int
-
     def insert(b: Body): Quad
   }
 
@@ -185,14 +170,18 @@ package object barneshut {
     for (i <- 0 until matrix.length) matrix(i) = new ConcBuffer
 
     def +=(b: Body): SectorMatrix = {
-      ???
+      val xSector = math.min(math.floor(b.x / sectorSize).toInt, sectorPrecision - 1)
+      val ySector = math.min(math.floor(b.y / sectorSize).toInt, sectorPrecision - 1)
+      this(xSector, ySector) += b
       this
     }
 
     def apply(x: Int, y: Int) = matrix(y * sectorPrecision + x)
 
     def combine(that: SectorMatrix): SectorMatrix = {
-      ???
+      val outputSm = new SectorMatrix(this.boundaries, this.sectorPrecision)
+      for (i <- 0 until outputSm.matrix.length) outputSm.matrix(i) = this.matrix(i).combine(that.matrix(i))
+      outputSm
     }
 
     def toQuad(parallelism: Int): Quad = {
